@@ -38,8 +38,10 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	p := os.Getenv("PORT")
+	port := fmt.Sprintf(":%s", p)
 	http.HandleFunc("/api/hello", helloHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(port, nil))
 }
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
@@ -105,8 +107,8 @@ func getWeatherData(ip string) (WeatherData, error) {
 	if err != nil {
 		return WeatherData{}, err
 	}
-	var parsed WeatherData
 
+	var parsed WeatherData
 	err = json.Unmarshal(body, &parsed)
 	if err != nil {
 		return WeatherData{}, err
